@@ -677,7 +677,7 @@ function sendOrderToAdmins(orderData, admins) {
     ).join('\n');
 
     const protocol = 'https';
-    const host = 'flowerdelivery.bothost.ru'; // Домен
+    const host = 'monge.bothost.tech.ru'; // Домен
     const adminLink = `${protocol}://${host}/admin`;
 
     const message =
@@ -751,8 +751,8 @@ server.listen(PORT, '0.0.0.0', () => {
     console.log('✅ Flower Mini App сервер запущен');
     console.log('='.repeat(50));
     console.log(`📱 Порт: ${PORT}`);
-    console.log(`🌐 Домен: flowerdelivery.bothost.ru`);
-    console.log(`👑 Админ панель: https://flowerdelivery.bothost.ru/admin`);
+    console.log(`🌐 Домен: monge.bothost.tech.ru`);
+    console.log(`👑 Админ панель: https://monge.bothost.tech.ru/admin`);
     console.log(`💾 База данных: ${DB_FILE}`);
     console.log(`📸 Папка загрузок: ${UPLOAD_DIR}`);
     console.log(`🔑 Токен бота: ${BOT_TOKEN.substring(0, 10)}...`);
