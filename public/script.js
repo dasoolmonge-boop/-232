@@ -82,21 +82,21 @@ function renderBouquets(bouquetsArray) {
         const card = document.createElement('div');
         card.className = 'bouquet-card';
         card.innerHTML = `
-            ${bouquet.discount ? \`<div class="bouquet-badge">-\${bouquet.discount} ₽</div>\` : ''}
-            <img src="\${bouquet.photo}" alt="\${bouquet.name}" class="bouquet-image" loading="lazy"
+            ${bouquet.discount ? `<div class="bouquet-badge">-${bouquet.discount} ₽</div>` : ''}
+            <img src="${bouquet.photo}" alt="${bouquet.name}" class="bouquet-image" loading="lazy"
                  onerror="this.src='https://via.placeholder.com/200?text=Букет'">
             <div class="bouquet-info">
-                <div class="bouquet-name">\${bouquet.name}</div>
-                <div class="bouquet-composition">🌿 \${bouquet.composition}</div>
-                <div class="bouquet-size">📏 \${bouquet.size}</div>
+                <div class="bouquet-name">${bouquet.name}</div>
+                <div class="bouquet-composition">🌿 ${bouquet.composition}</div>
+                <div class="bouquet-size">📏 ${bouquet.size}</div>
                 <div class="bouquet-description">
-                    \${bouquet.description}
+                    ${bouquet.description}
                 </div>
                 <div class="bouquet-price-row">
                     <div class="bouquet-price">
-                        \${bouquet.discount ? \`<span class="price-old">\${bouquet.price} ₽</span><span class="price-current">\${bouquet.price - bouquet.discount} ₽</span>\` : \`<span class="price-current">\${bouquet.price} ₽</span>\`}
+                        ${bouquet.discount ? `<span class="price-old">${bouquet.price} ₽</span><span class="price-current">${bouquet.price - bouquet.discount} ₽</span>` : `<span class="price-current">${bouquet.price} ₽</span>`}
                     </div>
-                    <button class="add-to-cart" data-id="\${bouquet.id}">
+                    <button class="add-to-cart" data-id="${bouquet.id}">
                         <i class="fas fa-plus"></i>
                     </button>
                 </div>
