@@ -21,23 +21,45 @@ let user = tg.initDataUnsafe.user || {};
 
 // Загрузка данных букетов
 async function loadBouquets() {
+    // 1. Сначала показываем из кеша (если есть) для моментальной загрузки
+    const cached = localStorage.getItem('cached_bouquets');
+    if (cached) {
+        try {
+            bouquets = JSON.parse(cached);
+            renderBouquets(bouquets);
+        } catch (e) {
+            console.log("Ошибка чтения кеша", e);
+        }
+    }
+
+    // 2. Фоново загружаем свежие данные с сервера
     try {
         const response = await fetch('/api/bouquets');
         const data = await response.json();
-        bouquets = data;
-        renderBouquets(bouquets);
+        
+        // Если данные изменились или кеша не было, перерисовываем
+        if (JSON.stringify(data) !== JSON.stringify(bouquets)) {
+            bouquets = data;
+            localStorage.setItem('cached_bouquets', JSON.stringify(bouquets));
+            renderBouquets(bouquets);
+        }
     } catch (error) {
         console.error('Ошибка загрузки букетов:', error);
-        showToast('Ошибка загрузки букетов', 'error');
-
-        const grid = document.getElementById('bouquetsGrid');
-        grid.innerHTML = `
-            <div class="empty-cart">
-                <i class="fas fa-exclamation-circle" style="opacity: 0.5;"></i>
-                <p>Не удалось загрузить букеты</p>
-                <button class="category active" onclick="loadBouquets()" style="margin-top: 16px;">Повторить</button>
-            </div>
-        `;
+        
+        // Показываем ошибку только если даже кеша нет
+        if (!cached) {
+            showToast('Ошибка загрузки букетов', 'error');
+            const grid = document.getElementById('bouquetsGrid');
+            grid.innerHTML = `
+                <div class="empty-cart">
+                    <i class="fas fa-exclamation-circle" style="opacity: 0.5;"></i>
+                    <p>Не удалось загрузить букеты</p>
+                    <button class="category active" onclick="loadBouquets()" style="margin-top: 16px;">Повторить</button>
+                </div>
+            `;
+        } else {
+            showToast('Показаны сохраненные данные (нет связи с сервером)', 'warning');
+        }
     }
 }
 
@@ -61,7 +83,7 @@ function renderBouquets(bouquetsArray) {
         card.className = 'bouquet-card';
         card.innerHTML = `
             ${bouquet.discount ? \`<div class="bouquet-badge">-\${bouquet.discount} ₽</div>\` : ''}
-            <img src="\${bouquet.photo}" alt="\${bouquet.name}" class="bouquet-image"
+            <img src="\${bouquet.photo}" alt="\${bouquet.name}" class="bouquet-image" loading="lazy"
                  onerror="this.src='https://via.placeholder.com/200?text=Букет'">
             <div class="bouquet-info">
                 <div class="bouquet-name">\${bouquet.name}</div>
