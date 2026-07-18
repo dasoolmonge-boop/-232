@@ -60,23 +60,23 @@ function renderBouquets(bouquetsArray) {
         const card = document.createElement('div');
         card.className = 'bouquet-card';
         card.innerHTML = `
-            <img src="${bouquet.photo}" alt="${bouquet.name}" class="bouquet-image"
-                 onerror="this.src='https://via.placeholder.com/200?text=Букет'">
+            <div class="bouquet-image-container">
+                <img src="${bouquet.photo}" alt="${bouquet.name}" class="bouquet-image"
+                     onerror="this.src='https://via.placeholder.com/200?text=Букет'">
+                <button class="like-btn" onclick="event.stopPropagation(); this.classList.toggle('liked');">
+                    <i class="fas fa-heart"></i>
+                </button>
+            </div>
             <div class="bouquet-info">
-                <div class="bouquet-name">${bouquet.name}</div>
-                <div class="bouquet-composition">🌿 ${bouquet.composition}</div>
-                <div class="bouquet-size">📏 ${bouquet.size}</div>
-                <div class="bouquet-description">
-                    ${bouquet.description}
-                </div>
                 <div class="bouquet-price-row">
                     <span class="bouquet-price">
-                        ${bouquet.discount ? `<span style="text-decoration: line-through; color: var(--tg-hint); font-size: 0.8em; margin-right: 5px;">${bouquet.price} ₽</span> ${bouquet.price - bouquet.discount} ₽` : `${bouquet.price} ₽`}
+                        ${bouquet.discount ? `<span style="text-decoration: line-through; color: var(--text-secondary); font-size: 0.8em; margin-right: 5px;">${bouquet.price} ₽</span> ${bouquet.price - bouquet.discount} ₽` : `${bouquet.price} ₽`}
                     </span>
                     <button class="add-to-cart" data-id="${bouquet.id}">
                         <i class="fas fa-plus"></i>
                     </button>
                 </div>
+                <div class="bouquet-name">${bouquet.name}</div>
             </div>
         `;
 

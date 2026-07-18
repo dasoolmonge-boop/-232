@@ -277,24 +277,35 @@ document.getElementById('closeCart').addEventListener('click', () => {
 
 // Форматирование телефона
 document.getElementById('phone').addEventListener('input', (e) => {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.length > 0) {
-        if (value.startsWith('7') || value.startsWith('8')) {
-            let formatted = value;
-            if (value.startsWith('7')) {
-                formatted = '+7';
-                if (value.length > 1) formatted += ' ' + value.substring(1, 4);
-                if (value.length > 4) formatted += ' ' + value.substring(4, 7);
-                if (value.length > 7) formatted += '-' + value.substring(7, 9);
-                if (value.length > 9) formatted += '-' + value.substring(9, 11);
-            } else {
-                formatted = '8';
-                if (value.length > 1) formatted += ' ' + value.substring(1, 4);
-                if (value.length > 4) formatted += ' ' + value.substring(4, 7);
-                if (value.length > 7) formatted += '-' + value.substring(7, 9);
-                if (value.length > 9) formatted += '-' + value.substring(9, 11);
-            }
-            e.target.value = formatted;
-        }
+    let input = e.target.value.replace(/\D/g, '');
+    if (!input) {
+        e.target.value = '';
+        return;
     }
+    
+    let isPlus = e.target.value.startsWith('+');
+    let formatted = isPlus ? '+' : '';
+    
+    if (['7', '8', '9'].indexOf(input[0]) > -1) {
+        if (input[0] === '9') input = '7' + input;
+        let firstDigit = (input[0] === '8') ? '8' : '+7';
+        formatted = firstDigit + ' ';
+        
+        if (input.length > 1) {
+            formatted += '(' + input.substring(1, 4);
+        }
+        if (input.length >= 5) {
+            formatted += ') ' + input.substring(4, 7);
+        }
+        if (input.length >= 8) {
+            formatted += '-' + input.substring(7, 9);
+        }
+        if (input.length >= 10) {
+            formatted += '-' + input.substring(9, 11);
+        }
+    } else {
+        formatted = '+' + input.substring(0, 16);
+    }
+    
+    e.target.value = formatted;
 });

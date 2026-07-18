@@ -1,16 +1,26 @@
-:root {
-    --tg-bg: var(--tg-theme-bg-color, #ffffff);
-    --tg-text: var(--tg-theme-text-color, #222222);
-    --tg-hint: var(--tg-theme-hint-color, #999999);
-    --tg-link: var(--tg-theme-link-color, #2481cc);
-    --tg-button: var(--tg-theme-button-color, #50a8eb);
-    --tg-button-text: var(--tg-theme-button-text-color, #ffffff);
-    --tg-secondary-bg: var(--tg-theme-secondary-bg-color, #f5f5f7);
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+:root {
+    --bg-color: #1c2128;
+    --card-bg: #1c2128;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a5aa;
+    --accent: #50a8eb;
+    --btn-bg: #2b3238;
+    --btn-active: #3b444b;
     --success: #4caf50;
     --error: #f44336;
     --warning: #ff9800;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    /* Map TG variables to dark theme for compatibility */
+    --tg-bg: var(--bg-color);
+    --tg-text: var(--text-primary);
+    --tg-hint: var(--text-secondary);
+    --tg-link: var(--accent);
+    --tg-button: var(--accent);
+    --tg-button-text: #ffffff;
+    --tg-secondary-bg: var(--btn-bg);
 }
 
 * {
@@ -20,9 +30,9 @@
 }
 
 body {
-    background-color: var(--tg-bg);
-    color: var(--tg-text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 16px;
     line-height: 1.5;
     overflow-x: hidden;
@@ -33,20 +43,18 @@ body {
     max-width: 500px;
     margin: 0 auto;
     min-height: 100vh;
-    background-color: var(--tg-bg);
+    background-color: var(--bg-color);
     position: relative;
     padding-bottom: 20px;
 }
 
 /* Header */
 .header {
-    background: var(--tg-secondary-bg);
+    background: var(--bg-color);
     padding: 16px;
     position: sticky;
     top: 0;
     z-index: 10;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 .header-content {
@@ -58,10 +66,7 @@ body {
 .logo {
     font-size: 20px;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--tg-button) 0%, #ff8a8a 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
 }
 
 .cart-icon {
@@ -69,15 +74,15 @@ body {
     cursor: pointer;
     padding: 8px;
     font-size: 24px;
-    color: var(--tg-text);
+    color: var(--text-primary);
 }
 
 .cart-badge {
     position: absolute;
     top: 0;
     right: 0;
-    background: var(--tg-button);
-    color: var(--tg-button-text);
+    background: var(--text-primary);
+    color: var(--bg-color);
     font-size: 12px;
     font-weight: bold;
     min-width: 18px;
@@ -93,7 +98,7 @@ body {
 .categories {
     display: flex;
     gap: 8px;
-    padding: 16px;
+    padding: 12px 16px;
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
@@ -104,20 +109,21 @@ body {
 }
 
 .category {
-    background: var(--tg-secondary-bg);
+    background: var(--btn-bg);
     border: none;
-    padding: 8px 16px;
+    padding: 10px 16px;
     border-radius: 20px;
     font-size: 14px;
-    color: var(--tg-text);
+    font-weight: 600;
+    color: var(--text-primary);
     cursor: pointer;
     white-space: nowrap;
-    transition: all 0.2s;
+    transition: background 0.2s;
+    font-family: inherit;
 }
 
 .category.active {
-    background: var(--tg-button);
-    color: var(--tg-button-text);
+    background: var(--btn-active);
 }
 
 /* Grid */
@@ -127,6 +133,102 @@ body {
     gap: 12px;
     padding: 16px;
     padding-bottom: 80px;
+}
+
+.bouquet-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.bouquet-card:active {
+    transform: scale(0.98);
+}
+
+.bouquet-image-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 0.8;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.bouquet-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.like-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(4px);
+    color: rgba(255, 255, 255, 0.8);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.like-btn.liked {
+    background: rgba(255, 255, 255, 0.9);
+    color: #ff3b30;
+    border-color: white;
+}
+
+.bouquet-info {
+    padding: 12px 4px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.bouquet-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.bouquet-price {
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text-primary);
+}
+
+.bouquet-name {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.add-to-cart {
+    background: var(--btn-bg);
+    color: var(--text-primary);
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.add-to-cart.added {
+    background: var(--success);
 }
 
 /* Cart Panel */
