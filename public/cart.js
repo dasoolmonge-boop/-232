@@ -316,3 +316,9 @@ document.getElementById('phone').addEventListener('input', (e) => {
     
     e.target.value = formatted;
 });
+// Скрываем HTML кнопку если открыто в Telegram (чтобы не было 2 кнопок)
+if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.platform !== 'unknown') {
+    document.getElementById('checkoutBtn').style.display = 'none';
+    const cartTotal = document.querySelector('.cart-total');
+    if (cartTotal) cartTotal.style.marginBottom = '0';
+}
