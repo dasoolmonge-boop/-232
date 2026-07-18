@@ -230,52 +230,65 @@ const server = http.createServer((req, res) => {
     // ============================================
 
     if (pathname === '/api/upload' && req.method === 'POST') {
-        const boundary = req.headers['content-type'].split('boundary=')[1];
-        let body = [];
-
-        req.on('data', chunk => {
-            body.push(chunk);
-        }).on('end', () => {
-            try {
-                const buffer = Buffer.concat(body);
-
-                // Ищем имя файла
-                const text = buffer.toString('binary');
-                const filenameMatch = text.match(/filename="(.+?)"/);
-                const filename = filenameMatch ? filenameMatch[1] : `photo_${Date.now()}.jpg`;
-
-                // Ищем содержимое файла
-                const fileDataStart = buffer.indexOf('\r\n\r\n') + 4;
-                const fileDataEnd = buffer.lastIndexOf('\r\n--' + boundary);
-
-                if (fileDataStart !== -1 && fileDataEnd !== -1) {
-                    const fileData = buffer.slice(fileDataStart, fileDataEnd);
-
-                    // Генерируем уникальное имя файла
-                    const ext = path.extname(filename) || '.jpg';
-                    const newFilename = `flower_${Date.now()}${ext}`;
-                    const filePath = path.join(UPLOAD_DIR, newFilename);
-
-                    // Сохраняем файл
-                    fs.writeFileSync(filePath, fileData);
-
-                    const fileUrl = `/uploads/${newFilename}`;
-
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({
-                        success: true,
-                        url: fileUrl,
-                        filename: newFilename
-                    }));
-                } else {
-                    throw new Error('Не удалось извлечь данные файла');
-                }
-            } catch (error) {
-                console.error('❌ Ошибка загрузки файла:', error);
-                res.writeHead(500);
-                res.end(JSON.stringify({ error: 'Ошибка загрузки файла' }));
+        try {
+            const contentType = req.headers['content-type'] || '';
+            const boundaryMatch = contentType.split('boundary=');
+            if (boundaryMatch.length < 2) {
+                res.writeHead(400);
+                res.end(JSON.stringify({ error: 'Missing boundary' }));
+                return;
             }
-        });
+            const boundary = boundaryMatch[1];
+            let body = [];
+
+            req.on('data', chunk => {
+                body.push(chunk);
+            }).on('end', () => {
+                try {
+                    const buffer = Buffer.concat(body);
+
+                    // Ищем имя файла
+                    const text = buffer.toString('binary');
+                    const filenameMatch = text.match(/filename="(.+?)"/);
+                    const filename = filenameMatch ? filenameMatch[1] : `photo_${Date.now()}.jpg`;
+
+                    // Ищем содержимое файла
+                    const fileDataStart = buffer.indexOf('\r\n\r\n') + 4;
+                    const fileDataEnd = buffer.lastIndexOf('\r\n--' + boundary);
+
+                    if (fileDataStart !== -1 && fileDataEnd !== -1 && fileDataStart < fileDataEnd) {
+                        const fileData = buffer.slice(fileDataStart, fileDataEnd);
+
+                        // Генерируем уникальное имя файла
+                        const ext = path.extname(filename) || '.jpg';
+                        const newFilename = `flower_${Date.now()}${ext}`;
+                        const filePath = path.join(UPLOAD_DIR, newFilename);
+
+                        // Сохраняем файл
+                        fs.writeFileSync(filePath, fileData);
+
+                        const fileUrl = `/uploads/${newFilename}`;
+
+                        res.writeHead(200, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({
+                            success: true,
+                            url: fileUrl,
+                            filename: newFilename
+                        }));
+                    } else {
+                        throw new Error('Не удалось извлечь данные файла (неверный формат)');
+                    }
+                } catch (error) {
+                    console.error('❌ Ошибка обработки файла:', error);
+                    res.writeHead(500);
+                    res.end(JSON.stringify({ error: 'Ошибка загрузки файла' }));
+                }
+            });
+        } catch (error) {
+            console.error('❌ Ошибка /api/upload:', error);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: 'Внутренняя ошибка сервера' }));
+        }
         return;
     }
 
