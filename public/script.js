@@ -21,45 +21,23 @@ let user = tg.initDataUnsafe.user || {};
 
 // Загрузка данных букетов
 async function loadBouquets() {
-    // 1. Сначала показываем из кеша (если есть) для моментальной загрузки
-    const cached = localStorage.getItem('cached_bouquets');
-    if (cached) {
-        try {
-            bouquets = JSON.parse(cached);
-            renderBouquets(bouquets);
-        } catch (e) {
-            console.log("Ошибка чтения кеша", e);
-        }
-    }
-
-    // 2. Фоново загружаем свежие данные с сервера
     try {
         const response = await fetch('/api/bouquets');
         const data = await response.json();
-        
-        // Если данные изменились или кеша не было, перерисовываем
-        if (JSON.stringify(data) !== JSON.stringify(bouquets)) {
-            bouquets = data;
-            localStorage.setItem('cached_bouquets', JSON.stringify(bouquets));
-            renderBouquets(bouquets);
-        }
+        bouquets = data;
+        renderBouquets(bouquets);
     } catch (error) {
         console.error('Ошибка загрузки букетов:', error);
-        
-        // Показываем ошибку только если даже кеша нет
-        if (!cached) {
-            showToast('Ошибка загрузки букетов', 'error');
-            const grid = document.getElementById('bouquetsGrid');
-            grid.innerHTML = `
-                <div class="empty-cart">
-                    <i class="fas fa-exclamation-circle" style="opacity: 0.5;"></i>
-                    <p>Не удалось загрузить букеты</p>
-                    <button class="category active" onclick="loadBouquets()" style="margin-top: 16px;">Повторить</button>
-                </div>
-            `;
-        } else {
-            showToast('Показаны сохраненные данные (нет связи с сервером)', 'warning');
-        }
+        showToast('Ошибка загрузки букетов', 'error');
+
+        const grid = document.getElementById('bouquetsGrid');
+        grid.innerHTML = `
+            <div class="empty-cart">
+                <i class="fas fa-exclamation-circle" style="font-size: 48px; opacity: 0.3;"></i>
+                <p style="margin-top: 16px;">Не удалось загрузить букеты</p>
+                <button class="category" onclick="loadBouquets()" style="margin-top: 16px;">Повторить</button>
+            </div>
+        `;
     }
 }
 
@@ -70,9 +48,9 @@ function renderBouquets(bouquetsArray) {
 
     if (bouquetsArray.length === 0) {
         grid.innerHTML = `
-            <div class="empty-cart">
-                <i class="fas fa-heart" style="opacity: 0.5;"></i>
-                <p>Скоро появятся новые букеты!</p>
+            <div class="empty-cart" style="grid-column: 1/-1;">
+                <i class="fas fa-heart" style="font-size: 48px; opacity: 0.3;"></i>
+                <p style="margin-top: 16px;">Скоро появятся новые букеты!</p>
             </div>
         `;
         return;
@@ -82,8 +60,7 @@ function renderBouquets(bouquetsArray) {
         const card = document.createElement('div');
         card.className = 'bouquet-card';
         card.innerHTML = `
-            ${bouquet.discount ? `<div class="bouquet-badge">-${bouquet.discount} ₽</div>` : ''}
-            <img src="${bouquet.photo}" alt="${bouquet.name}" class="bouquet-image" loading="lazy"
+            <img src="${bouquet.photo}" alt="${bouquet.name}" class="bouquet-image"
                  onerror="this.src='https://via.placeholder.com/200?text=Букет'">
             <div class="bouquet-info">
                 <div class="bouquet-name">${bouquet.name}</div>
@@ -93,9 +70,9 @@ function renderBouquets(bouquetsArray) {
                     ${bouquet.description}
                 </div>
                 <div class="bouquet-price-row">
-                    <div class="bouquet-price">
-                        ${bouquet.discount ? `<span class="price-old">${bouquet.price} ₽</span><span class="price-current">${bouquet.price - bouquet.discount} ₽</span>` : `<span class="price-current">${bouquet.price} ₽</span>`}
-                    </div>
+                    <span class="bouquet-price">
+                        ${bouquet.discount ? `<span style="text-decoration: line-through; color: var(--tg-hint); font-size: 0.8em; margin-right: 5px;">${bouquet.price} ₽</span> ${bouquet.price - bouquet.discount} ₽` : `${bouquet.price} ₽`}
+                    </span>
                     <button class="add-to-cart" data-id="${bouquet.id}">
                         <i class="fas fa-plus"></i>
                     </button>

@@ -57,9 +57,9 @@ const cart = {
         if (this.items.length === 0) {
             cartItems.innerHTML = `
                 <div class="empty-cart">
-                    <i class="fas fa-shopping-cart"></i>
-                    <p>Корзина пуста</p>
-                    <p style="font-size: 14px; margin-top: 8px;">Добавьте букеты из каталога</p>
+                    <i class="fas fa-shopping-cart" style="font-size: 48px; opacity: 0.3;"></i>
+                    <p style="margin-top: 16px; color: var(--tg-hint);">Корзина пуста</p>
+                    <p style="margin-top: 8px; font-size: 14px; color: var(--tg-hint);">Добавьте букеты из каталога</p>
                 </div>
             `;
             tg.MainButton.hide();

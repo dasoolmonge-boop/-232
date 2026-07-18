@@ -1,62 +1,32 @@
-/* 
-   Premium Flower Shop Mini App Styles
-   Theme: Elegant, Modern, Glassmorphism 
-*/
-
 :root {
-    /* Base Telegram Variables mapping */
     --tg-bg: var(--tg-theme-bg-color, #ffffff);
     --tg-text: var(--tg-theme-text-color, #222222);
     --tg-hint: var(--tg-theme-hint-color, #999999);
-    --tg-secondary-bg: var(--tg-theme-secondary-bg-color, #f0f0f5);
-    
-    /* Premium Palette */
-    --premium-accent: #e6a8b7; /* Soft Rose Gold / Blush */
-    --premium-accent-dark: #d28c9d;
-    --premium-gradient: linear-gradient(135deg, #fce0e5 0%, #e6a8b7 100%);
-    --premium-gradient-dark: linear-gradient(135deg, #4a3438 0%, #2a1f22 100%);
-    
-    /* Overrides for specific elements */
-    --success: #4caf50;
-    --error: #ff4c4c;
-    
-    /* Effects */
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.5);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-    --premium-shadow: 0 10px 25px -5px rgba(230, 168, 183, 0.3);
-    
-    /* Typography */
-    --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
+    --tg-link: var(--tg-theme-link-color, #2481cc);
+    --tg-button: var(--tg-theme-button-color, #50a8eb);
+    --tg-button-text: var(--tg-theme-button-text-color, #ffffff);
+    --tg-secondary-bg: var(--tg-theme-secondary-bg-color, #f5f5f7);
 
-/* Dark Theme Adjustments */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --glass-bg: rgba(30, 30, 35, 0.65);
-        --glass-border: rgba(255, 255, 255, 0.08);
-        --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        --premium-shadow: 0 10px 25px -5px rgba(230, 168, 183, 0.15);
-        --premium-gradient: var(--premium-gradient-dark);
-    }
+    --success: #4caf50;
+    --error: #f44336;
+    --warning: #ff9800;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
 }
 
 body {
     background-color: var(--tg-bg);
     color: var(--tg-text);
-    font-family: var(--font-main);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 16px;
     line-height: 1.5;
     overflow-x: hidden;
     padding-bottom: env(safe-area-inset-bottom);
-    transition: background-color 0.3s, color 0.3s;
 }
 
 .app {
@@ -68,17 +38,15 @@ body {
     padding-bottom: 20px;
 }
 
-/* Header - Glassmorphism */
+/* Header */
 .header {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--glass-border);
-    padding: 16px 20px;
+    background: var(--tg-secondary-bg);
+    padding: 16px;
     position: sticky;
     top: 0;
-    z-index: 100;
-    transition: all 0.3s ease;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 .header-content {
@@ -88,39 +56,30 @@ body {
 }
 
 .logo {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
-    letter-spacing: -0.5px;
-    background: var(--premium-gradient);
+    background: linear-gradient(135deg, var(--tg-button) 0%, #ff8a8a 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .cart-icon {
     position: relative;
     cursor: pointer;
     padding: 8px;
-    font-size: 22px;
+    font-size: 24px;
     color: var(--tg-text);
-    transition: transform 0.2s;
-}
-
-.cart-icon:active {
-    transform: scale(0.9);
 }
 
 .cart-badge {
     position: absolute;
-    top: 2px;
-    right: 2px;
-    background: var(--premium-accent);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
+    top: 0;
+    right: 0;
+    background: var(--tg-button);
+    color: var(--tg-button-text);
+    font-size: 12px;
+    font-weight: bold;
     min-width: 18px;
     height: 18px;
     border-radius: 9px;
@@ -128,15 +87,13 @@ body {
     align-items: center;
     justify-content: center;
     padding: 0 4px;
-    box-shadow: 0 2px 5px rgba(230, 168, 183, 0.5);
-    border: 2px solid var(--tg-bg);
 }
 
-/* Categories - Pill style */
+/* Categories */
 .categories {
     display: flex;
-    gap: 10px;
-    padding: 16px 20px;
+    gap: 8px;
+    padding: 16px;
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
@@ -148,197 +105,44 @@ body {
 
 .category {
     background: var(--tg-secondary-bg);
-    border: 1px solid transparent;
-    padding: 10px 20px;
-    border-radius: 24px;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
     font-size: 14px;
-    font-weight: 500;
-    font-family: var(--font-main);
-    color: var(--tg-hint);
+    color: var(--tg-text);
     cursor: pointer;
     white-space: nowrap;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.2s;
 }
 
 .category.active {
-    background: var(--premium-accent);
-    color: #fff;
-    border-color: var(--premium-accent-dark);
-    box-shadow: var(--premium-shadow);
+    background: var(--tg-button);
+    color: var(--tg-button-text);
 }
 
-/* Grid & Cards - Premium Look */
+/* Grid */
 .cakes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 16px;
-    padding: 0 20px 80px 20px;
-}
-
-.bouquet-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: var(--glass-shadow);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    animation: slideUpFade 0.5s ease backwards;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-/* Staggered animation classes to be added via JS */
-.bouquet-card:nth-child(1) { animation-delay: 0.05s; }
-.bouquet-card:nth-child(2) { animation-delay: 0.1s; }
-.bouquet-card:nth-child(3) { animation-delay: 0.15s; }
-.bouquet-card:nth-child(4) { animation-delay: 0.2s; }
-.bouquet-card:nth-child(5) { animation-delay: 0.25s; }
-.bouquet-card:nth-child(6) { animation-delay: 0.3s; }
-
-.bouquet-card:active {
-    transform: scale(0.96);
-}
-
-.bouquet-image {
-    width: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
-    background: var(--tg-secondary-bg);
-    border-bottom: 1px solid var(--glass-border);
-}
-
-.bouquet-badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: rgba(255, 76, 76, 0.9);
-    backdrop-filter: blur(4px);
-    color: white;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    z-index: 2;
-    box-shadow: 0 2px 8px rgba(255, 76, 76, 0.3);
-}
-
-.bouquet-info {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
     padding: 16px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    padding-bottom: 80px;
 }
 
-.bouquet-name {
-    font-weight: 700;
-    font-size: 16px;
-    margin-bottom: 4px;
-    letter-spacing: -0.2px;
-    color: var(--tg-text);
-}
-
-.bouquet-composition {
-    font-size: 12px;
-    color: var(--tg-hint);
-    margin-bottom: 4px;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.bouquet-size {
-    font-size: 12px;
-    color: var(--tg-hint);
-    margin-bottom: 10px;
-}
-
-.bouquet-description {
-    font-size: 13px;
-    color: var(--tg-hint);
-    margin-bottom: 12px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    line-height: 1.4;
-    flex: 1;
-}
-
-.bouquet-price-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: auto;
-}
-
-.bouquet-price {
-    display: flex;
-    flex-direction: column;
-}
-
-.price-old {
-    text-decoration: line-through;
-    color: var(--tg-hint);
-    font-size: 11px;
-    font-weight: 500;
-    line-height: 1;
-    margin-bottom: 2px;
-}
-
-.price-current {
-    font-weight: 700;
-    color: var(--tg-text);
-    font-size: 18px;
-    line-height: 1;
-}
-
-.add-to-cart {
-    background: var(--premium-accent);
-    color: #fff;
-    border: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 12px;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 4px 10px rgba(230, 168, 183, 0.4);
-}
-
-.add-to-cart:active {
-    transform: scale(0.85);
-}
-
-.add-to-cart.added {
-    background: var(--success);
-    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
-    transform: scale(1.05);
-}
-
-/* Cart Panel - Glassmorphism slide over */
+/* Cart Panel */
 .cart-panel {
     position: fixed;
     top: 0;
     right: -100%;
     width: 100%;
-    max-width: 420px;
+    max-width: 400px;
     height: 100vh;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-    transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background: var(--tg-bg);
+    box-shadow: var(--shadow);
+    transition: right 0.3s ease;
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    border-left: 1px solid var(--glass-border);
 }
 
 .cart-panel.open {
@@ -349,56 +153,41 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    border-bottom: 1px solid var(--glass-border);
-}
-
-.cart-header h2 {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
+    padding: 16px;
+    background: var(--tg-secondary-bg);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 .close-cart {
-    background: var(--tg-secondary-bg);
+    background: none;
     border: none;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    font-size: 20px;
-    color: var(--tg-text);
+    font-size: 24px;
+    color: var(--tg-hint);
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s;
 }
-.close-cart:active { transform: scale(0.9); }
 
 .cart-items {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
-    padding-bottom: 120px;
+    padding: 16px;
+    padding-bottom: 100px;
 }
 
 .cart-item {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     padding: 12px;
-    background: var(--tg-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-    animation: slideIn 0.3s ease forwards;
+    background: var(--tg-secondary-bg);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    animation: slideIn 0.2s ease;
 }
 
 .cart-item-image {
-    width: 70px;
-    height: 70px;
-    border-radius: 12px;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
     object-fit: cover;
 }
 
@@ -408,73 +197,60 @@ body {
 
 .cart-item-name {
     font-weight: 600;
-    margin-bottom: 6px;
-    font-size: 15px;
+    margin-bottom: 4px;
+    font-size: 14px;
 }
 
 .cart-item-price {
-    color: var(--tg-text);
-    font-weight: 700;
-    font-size: 15px;
+    color: var(--tg-button);
+    font-weight: 500;
+    font-size: 14px;
 }
 
 .remove-item {
-    background: rgba(255, 76, 76, 0.1);
+    background: none;
     border: none;
     color: var(--error);
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    font-size: 14px;
+    font-size: 18px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
+    padding: 4px;
 }
-.remove-item:active { transform: scale(0.9); }
 
 .cart-footer {
-    padding: 20px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid var(--glass-border);
-    position: absolute;
+    padding: 16px;
+    background: var(--tg-secondary-bg);
+    border-top: 1px solid rgba(0,0,0,0.05);
+    position: sticky;
     bottom: 0;
-    left: 0;
-    right: 0;
+    z-index: 5;
 }
 
 .cart-total {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     font-weight: 700;
-    font-size: 18px;
-    margin-bottom: 16px;
+    font-size: 16px;
+    margin-bottom: 12px;
 }
 
 .checkout-btn {
     width: 100%;
-    padding: 16px;
-    background: var(--premium-accent);
-    color: #fff;
+    padding: 14px;
+    background: var(--tg-button);
+    color: var(--tg-button-text);
     border: none;
-    border-radius: 16px;
+    border-radius: 12px;
     font-weight: 600;
     font-size: 16px;
-    font-family: var(--font-main);
     cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: var(--premium-shadow);
+    transition: opacity 0.2s;
 }
 
 .checkout-btn:active {
-    transform: scale(0.98);
-    box-shadow: 0 4px 10px rgba(230, 168, 183, 0.3);
+    opacity: 0.8;
 }
 
-/* Modal - Smooth overlay */
+/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -482,140 +258,139 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 2000;
-    align-items: flex-end; /* Bottom sheet style */
+    align-items: center;
     justify-content: center;
+    overflow-y: auto;
+    padding: 20px;
 }
 
 .modal.open {
     display: flex;
-    animation: fadeInModal 0.3s ease forwards;
 }
 
 .modal-content {
     background: var(--tg-bg);
-    border-radius: 28px 28px 0 0;
-    width: 100%;
-    max-width: 500px;
+    border-radius: 24px;
+    max-width: 100%;
+    width: 450px;
     max-height: 90vh;
     overflow-y: auto;
-    animation: slideUpSheet 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    animation: modalSlideIn 0.3s ease;
+    margin: auto;
     position: relative;
-    box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 24px 16px;
+    padding: 16px 20px;
+    background: var(--tg-secondary-bg);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
     position: sticky;
     top: 0;
-    background: var(--tg-bg);
     z-index: 10;
 }
 
-.modal-header h2 {
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--tg-hint);
+    cursor: pointer;
 }
 
-/* Order Form - Modern Floating Inputs */
+/* Order Form */
 .order-form {
-    padding: 0 24px 30px;
+    padding: 20px;
+    padding-bottom: 100px;
 }
 
 .form-group {
-    margin-bottom: 20px;
-    position: relative;
+    margin-bottom: 16px;
 }
 
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 12px;
+}
+
+.form-group.half {
+    margin-bottom: 0;
 }
 
 label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     font-weight: 500;
-    color: var(--tg-hint);
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    color: var(--tg-text);
+    font-size: 14px;
 }
 
 input, textarea {
     width: 100%;
-    padding: 16px;
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
+    padding: 12px;
+    border: 2px solid transparent;
+    border-radius: 12px;
     background: var(--tg-secondary-bg);
     color: var(--tg-text);
     font-size: 16px;
-    font-family: var(--font-main);
-    transition: all 0.3s;
+    transition: border-color 0.2s;
     -webkit-appearance: none;
     appearance: none;
 }
 
 input:focus, textarea:focus {
     outline: none;
-    border-color: var(--premium-accent);
-    background: var(--tg-bg);
-    box-shadow: 0 0 0 4px rgba(230, 168, 183, 0.15);
+    border-color: var(--tg-button);
 }
 
 input.error, textarea.error {
     border-color: var(--error);
-    background: rgba(255, 76, 76, 0.05);
 }
 
 .order-summary {
     background: var(--tg-secondary-bg);
-    padding: 20px;
-    border-radius: 16px;
-    margin: 24px 0;
-    border: 1px solid var(--glass-border);
+    padding: 16px;
+    border-radius: 12px;
+    margin: 20px 0;
 }
 
 .summary-item {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-size: 14px;
-    color: var(--tg-hint);
 }
 
 .summary-total {
     display: flex;
     justify-content: space-between;
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px dashed var(--tg-hint);
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0,0,0,0.1);
     font-weight: 700;
-    font-size: 18px;
-    color: var(--tg-text);
+    font-size: 16px;
 }
 
 .submit-order {
     width: 100%;
-    padding: 18px;
-    background: var(--premium-accent);
-    color: #fff;
+    padding: 16px;
+    background: var(--tg-button);
+    color: var(--tg-button-text);
     border: none;
-    border-radius: 16px;
+    border-radius: 12px;
     font-weight: 700;
     font-size: 16px;
-    font-family: var(--font-main);
     cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: var(--premium-shadow);
+    transition: all 0.2s;
+    position: sticky;
+    bottom: 20px;
+    z-index: 5;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .submit-order:active {
@@ -625,121 +400,170 @@ input.error, textarea.error {
 .submit-order:disabled {
     opacity: 0.5;
     pointer-events: none;
-    box-shadow: none;
 }
 
 /* Toast Notifications */
 .toast-container {
     position: fixed;
-    top: 20px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 3000;
     width: 90%;
     max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
 }
 
 .toast {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
+    background: var(--tg-secondary-bg);
     color: var(--tg-text);
-    padding: 14px 20px;
-    border-radius: 100px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    box-shadow: var(--shadow);
     display: flex;
     align-items: center;
     gap: 12px;
-    animation: slideDownToast 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    border: 1px solid var(--glass-border);
-    font-weight: 500;
-    font-size: 14px;
+    animation: slideUp 0.3s ease;
+    border-left: 4px solid var(--tg-button);
 }
 
-.toast i { font-size: 18px; }
-.toast.success i { color: var(--success); }
-.toast.error i { color: var(--error); }
+.toast.success {
+    border-left-color: var(--success);
+}
 
-/* Loaders and Empties */
+.toast.error {
+    border-left-color: var(--error);
+}
+
+.toast.warning {
+    border-left-color: var(--warning);
+}
+
+/* Loading */
 .loading {
     grid-column: 1 / -1;
     text-align: center;
-    padding: 60px 20px;
+    padding: 40px;
     color: var(--tg-hint);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    font-weight: 500;
 }
 
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(230, 168, 183, 0.3);
-    border-top-color: var(--premium-accent);
+.loading::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-left: 8px;
+    border: 2px solid var(--tg-hint);
+    border-top-color: var(--tg-button);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
 
+/* Empty cart */
 .empty-cart {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 20px;
+    padding: 40px 20px;
     color: var(--tg-hint);
     text-align: center;
-    grid-column: 1 / -1;
-}
-
-.empty-cart i {
-    font-size: 56px;
-    color: var(--tg-secondary-bg);
-    margin-bottom: 20px;
 }
 
 /* Animations */
-@keyframes slideUpFade {
-    0% { opacity: 0; transform: translateY(30px) scale(0.95); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes slideIn {
-    0% { opacity: 0; transform: translateX(30px); }
-    100% { opacity: 1; transform: translateX(0); }
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
-@keyframes slideUpSheet {
-    0% { transform: translateY(100%); }
-    100% { transform: translateY(0); }
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-@keyframes fadeInModal {
-    0% { background: rgba(0,0,0,0); backdrop-filter: blur(0px); }
-    100% { background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); }
-}
-
-@keyframes slideDownToast {
-    0% { opacity: 0; transform: translateY(-20px) scale(0.9); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
 
-/* Responsive Grid */
-@media (max-width: 380px) {
+/* Responsive */
+@media (max-width: 480px) {
     .cakes-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 12px;
-        padding: 0 16px 80px 16px;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        padding: 12px;
     }
-    
-    .bouquet-info { padding: 12px; }
-    .bouquet-name { font-size: 14px; }
-    .price-current { font-size: 16px; }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .modal-content {
+        width: 100%;
+        max-height: 95vh;
+    }
+
+    .order-form {
+        padding: 16px;
+        padding-bottom: 90px;
+    }
+
+    .submit-order {
+        bottom: 10px;
+    }
+}
+
+@media (max-width: 360px) {
+    .cakes-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+    .bouquet-card {
+        background: var(--tg-secondary-bg);
+    }
+
+    input, textarea {
+        background: var(--tg-secondary-bg);
+    }
 }
