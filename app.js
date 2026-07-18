@@ -22,15 +22,14 @@ const mimeTypes = {
     '.ico': 'image/x-icon'
 };
 
-// Файл для хранения данных
-const DB_FILE = path.join(__dirname, 'db.json');
-// Папка для загруженных изображений
-const UPLOAD_DIR = path.join(__dirname, 'public', 'uploads');
+// Определение путей для постоянного хранения данных (Bothost Volume)
+const PERSISTENT_DIR = fs.existsSync('/app/data') ? '/app/data' : __dirname;
+const DB_FILE = path.join(PERSISTENT_DIR, 'db.json');
+const UPLOAD_DIR = path.join(PERSISTENT_DIR, fs.existsSync('/app/data') ? 'uploads' : 'public/uploads');
 
-// Создаем папку для загрузок, если её нет
+// Убедимся, что папка uploads существует
 if (!fs.existsSync(UPLOAD_DIR)) {
     fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-    console.log('✅ Папка для загрузок создана');
 }
 
 // Начальные данные для БД
