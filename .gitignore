@@ -3,3 +3,5 @@ node_modules/
 .venv/
 public/uploads/
 uploads/
+db.json
+db.json.tmp

@@ -152,8 +152,12 @@ function readDB() {
         // Читаем и парсим файл
         const content = fs.readFileSync(DB_FILE, 'utf8');
         const db = JSON.parse(content);
+        if (!db.bouquets) db.bouquets = [];
+        if (!db.orders) db.orders = [];
         if (!db.admins) db.admins = [1066867845];
         if (!db.couriers) db.couriers = [];
+        if (!db.nextBouquetId) db.nextBouquetId = 1;
+        if (!db.nextOrderId) db.nextOrderId = 1;
         return db;
 
     } catch (error) {
