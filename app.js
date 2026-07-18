@@ -84,19 +84,19 @@ const getInitialData = () => ({
     nextOrderId: 1
 });
 
+// Глобальная переменная для базы данных (In-Memory Fallback)
+let memoryDB = null;
+
 // Инициализация базы данных
 function initDB() {
     try {
-        // Проверяем, существует ли файл
         if (!fs.existsSync(DB_FILE)) {
-            // Если файла нет, создаем с начальными данными
             const initialData = getInitialData();
             fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2));
             console.log('✅ База данных создана с начальными данными');
             return;
         }
 
-        // Проверяем, что файл не пустой
         const stats = fs.statSync(DB_FILE);
         if (stats.size === 0) {
             console.log('⚠️ Файл базы данных пустой, создаю новый...');
@@ -106,50 +106,37 @@ function initDB() {
             return;
         }
 
-        // Проверяем, что файл содержит валидный JSON
         const content = fs.readFileSync(DB_FILE, 'utf8');
         JSON.parse(content);
         console.log('✅ База данных загружена');
 
     } catch (error) {
-        console.error('❌ Ошибка при инициализации БД:', error.message);
-        console.log('🔄 Создаю новую базу данных...');
-
-        // Создаем резервную копию поврежденного файла, если он существует
-        if (fs.existsSync(DB_FILE) && fs.statSync(DB_FILE).size > 0) {
-            const backupFile = `${DB_FILE}.backup-${Date.now()}`;
-            fs.copyFileSync(DB_FILE, backupFile);
-            console.log(`📦 Создана резервная копия: ${backupFile}`);
-        }
-
-        // Записываем новые данные
-        const initialData = getInitialData();
-        fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2));
-        console.log('✅ База данных восстановлена');
+        console.error('❌ Ошибка при инициализации БД (возможно, файловая система только для чтения):', error.message);
+        console.log('🔄 Переход в режим In-Memory (БД в оперативной памяти)');
+        memoryDB = getInitialData();
     }
 }
 
 // Чтение данных из БД с защитой от ошибок
 function readDB() {
+    if (memoryDB) return JSON.parse(JSON.stringify(memoryDB));
+
     try {
-        // Проверяем существование файла
         if (!fs.existsSync(DB_FILE)) {
             console.log('⚠️ Файл БД не найден, создаю новый...');
             const initialData = getInitialData();
-            fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2));
+            try { fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2)); } catch(e){}
             return initialData;
         }
 
-        // Проверяем, не пустой ли файл
         const stats = fs.statSync(DB_FILE);
         if (stats.size === 0) {
             console.log('⚠️ Файл БД пустой, создаю новый...');
             const initialData = getInitialData();
-            fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2));
+            try { fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2)); } catch(e){}
             return initialData;
         }
 
-        // Читаем и парсим файл
         const content = fs.readFileSync(DB_FILE, 'utf8');
         const db = JSON.parse(content);
         if (!db.bouquets) db.bouquets = [];
@@ -162,50 +149,39 @@ function readDB() {
 
     } catch (error) {
         console.error('❌ Ошибка чтения БД:', error.message);
-
-        // В случае ошибки возвращаем данные по умолчанию
-        // и пытаемся восстановить файл
         const defaultData = getInitialData();
-
-        try {
-            fs.writeFileSync(DB_FILE, JSON.stringify(defaultData, null, 2));
-            console.log('✅ База данных восстановлена');
-        } catch (writeError) {
-            console.error('❌ Не удалось восстановить БД:', writeError.message);
-        }
-
+        try { fs.writeFileSync(DB_FILE, JSON.stringify(defaultData, null, 2)); } catch (e) {}
         return defaultData;
     }
 }
 
 // Запись данных в БД с проверкой
 function writeDB(data) {
+    if (memoryDB !== null) {
+        memoryDB = JSON.parse(JSON.stringify(data));
+        return true;
+    }
+
     try {
-        // Создаем временный файл для атомарной записи
         const tempFile = `${DB_FILE}.tmp`;
         fs.writeFileSync(tempFile, JSON.stringify(data, null, 2));
 
-        // Проверяем временный файл
         const verification = fs.readFileSync(tempFile, 'utf8');
         JSON.parse(verification);
 
-        // Если всё хорошо, заменяем основной файл
         fs.renameSync(tempFile, DB_FILE);
-
         return true;
     } catch (error) {
         console.error('❌ Ошибка записи БД:', error.message);
-
-        // Удаляем временный файл в случае ошибки
         try {
             if (fs.existsSync(`${DB_FILE}.tmp`)) {
                 fs.unlinkSync(`${DB_FILE}.tmp`);
             }
-        } catch (e) {
-            // Игнорируем ошибки при удалении
-        }
-
-        return false;
+        } catch (e) {}
+        
+        memoryDB = JSON.parse(JSON.stringify(data));
+        console.log('🔄 Аварийный переход в режим In-Memory');
+        return true;
     }
 }
 
