@@ -83,13 +83,13 @@ const cart = {
 
         // Обновляем MainButton Telegram
         if (this.items.length > 0 &&
-            !document.getElementById('cartPanel').classList.contains('open') &&
+            document.getElementById('cartPanel').classList.contains('open') &&
             !document.getElementById('checkoutModal').classList.contains('open')) {
             tg.MainButton.setText(`ОФОРМИТЬ ЗАКАЗ (${totalPrice} ₽)`);
             tg.MainButton.show();
             tg.MainButton.offClick();
             tg.MainButton.onClick(() => openCheckoutModal());
-        } else {
+        } else if (!document.getElementById('checkoutModal').classList.contains('open')) {
             tg.MainButton.hide();
         }
     },
@@ -246,16 +246,26 @@ document.getElementById('orderForm').addEventListener('submit', async (e) => {
 // Закрытие модального окна
 document.getElementById('closeModal').addEventListener('click', () => {
     document.getElementById('checkoutModal').classList.remove('open');
-    if (cart.items.length > 0 && !document.getElementById('cartPanel').classList.contains('open')) {
+    if (cart.items.length > 0 && document.getElementById('cartPanel').classList.contains('open')) {
+        tg.MainButton.setText(`ОФОРМИТЬ ЗАКАЗ (${cart.getTotal()} ₽)`);
+        tg.MainButton.offClick();
+        tg.MainButton.onClick(() => openCheckoutModal());
         tg.MainButton.show();
+    } else {
+        tg.MainButton.hide();
     }
 });
 
 document.getElementById('checkoutModal').addEventListener('click', (e) => {
     if (e.target === document.getElementById('checkoutModal')) {
         e.target.classList.remove('open');
-        if (cart.items.length > 0 && !document.getElementById('cartPanel').classList.contains('open')) {
+        if (cart.items.length > 0 && document.getElementById('cartPanel').classList.contains('open')) {
+            tg.MainButton.setText(`ОФОРМИТЬ ЗАКАЗ (${cart.getTotal()} ₽)`);
+            tg.MainButton.offClick();
+            tg.MainButton.onClick(() => openCheckoutModal());
             tg.MainButton.show();
+        } else {
+            tg.MainButton.hide();
         }
     }
 });
@@ -263,16 +273,13 @@ document.getElementById('checkoutModal').addEventListener('click', (e) => {
 // Обработка открытия корзины
 document.getElementById('cartIcon').addEventListener('click', () => {
     document.getElementById('cartPanel').classList.add('open');
-    tg.MainButton.hide();
     cart.render();
 });
 
 // Закрытие корзины
 document.getElementById('closeCart').addEventListener('click', () => {
     document.getElementById('cartPanel').classList.remove('open');
-    if (cart.items.length > 0 && !document.getElementById('checkoutModal').classList.contains('open')) {
-        tg.MainButton.show();
-    }
+    tg.MainButton.hide();
 });
 
 // Форматирование телефона
