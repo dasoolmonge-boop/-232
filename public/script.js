@@ -33,9 +33,9 @@ async function loadBouquets() {
         const grid = document.getElementById('bouquetsGrid');
         grid.innerHTML = `
             <div class="empty-cart">
-                <i class="fas fa-exclamation-circle" style="font-size: 48px; opacity: 0.3;"></i>
-                <p style="margin-top: 16px;">Не удалось загрузить букеты</p>
-                <button class="category" onclick="loadBouquets()" style="margin-top: 16px;">Повторить</button>
+                <i class="fas fa-exclamation-circle" style="opacity: 0.5;"></i>
+                <p>Не удалось загрузить букеты</p>
+                <button class="category active" onclick="loadBouquets()" style="margin-top: 16px;">Повторить</button>
             </div>
         `;
     }
@@ -48,9 +48,9 @@ function renderBouquets(bouquetsArray) {
 
     if (bouquetsArray.length === 0) {
         grid.innerHTML = `
-            <div class="empty-cart" style="grid-column: 1/-1;">
-                <i class="fas fa-heart" style="font-size: 48px; opacity: 0.3;"></i>
-                <p style="margin-top: 16px;">Скоро появятся новые букеты!</p>
+            <div class="empty-cart">
+                <i class="fas fa-heart" style="opacity: 0.5;"></i>
+                <p>Скоро появятся новые букеты!</p>
             </div>
         `;
         return;
@@ -60,20 +60,21 @@ function renderBouquets(bouquetsArray) {
         const card = document.createElement('div');
         card.className = 'bouquet-card';
         card.innerHTML = `
-            <img src="${bouquet.photo}" alt="${bouquet.name}" class="bouquet-image"
+            ${bouquet.discount ? \`<div class="bouquet-badge">-\${bouquet.discount} ₽</div>\` : ''}
+            <img src="\${bouquet.photo}" alt="\${bouquet.name}" class="bouquet-image"
                  onerror="this.src='https://via.placeholder.com/200?text=Букет'">
             <div class="bouquet-info">
-                <div class="bouquet-name">${bouquet.name}</div>
-                <div class="bouquet-composition">🌿 ${bouquet.composition}</div>
-                <div class="bouquet-size">📏 ${bouquet.size}</div>
+                <div class="bouquet-name">\${bouquet.name}</div>
+                <div class="bouquet-composition">🌿 \${bouquet.composition}</div>
+                <div class="bouquet-size">📏 \${bouquet.size}</div>
                 <div class="bouquet-description">
-                    ${bouquet.description}
+                    \${bouquet.description}
                 </div>
                 <div class="bouquet-price-row">
-                    <span class="bouquet-price">
-                        ${bouquet.discount ? `<span style="text-decoration: line-through; color: var(--tg-hint); font-size: 0.8em; margin-right: 5px;">${bouquet.price} ₽</span> ${bouquet.price - bouquet.discount} ₽` : `${bouquet.price} ₽`}
-                    </span>
-                    <button class="add-to-cart" data-id="${bouquet.id}">
+                    <div class="bouquet-price">
+                        \${bouquet.discount ? \`<span class="price-old">\${bouquet.price} ₽</span><span class="price-current">\${bouquet.price - bouquet.discount} ₽</span>\` : \`<span class="price-current">\${bouquet.price} ₽</span>\`}
+                    </div>
+                    <button class="add-to-cart" data-id="\${bouquet.id}">
                         <i class="fas fa-plus"></i>
                     </button>
                 </div>
