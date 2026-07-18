@@ -586,6 +586,9 @@ const server = http.createServer((req, res) => {
         filePath = path.join(__dirname, 'public', 'index.html');
     } else if (pathname === '/admin') {
         filePath = path.join(__dirname, 'public', 'admin.html');
+    } else if (pathname.startsWith('/uploads/')) {
+        const fileName = pathname.replace('/uploads/', '');
+        filePath = path.join(UPLOAD_DIR, fileName);
     } else {
         filePath = path.join(__dirname, 'public', pathname);
     }
